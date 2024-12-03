@@ -1,4 +1,3 @@
-
 FROM golang:1.22.0-alpine AS build
 
 WORKDIR /WorkerQueueSystem
