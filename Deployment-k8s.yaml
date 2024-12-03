@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workerqueuesystem-deployment
+  namespace: friendzy
+  labels:
+    app: workerqueuesystem
+    env: production
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workerqueuesystem
+  template:
+    metadata:
+      labels:
+        app: workerqueuesystem  # Fixed label format
+    spec:
+      containers:
+        - name: workerqueue-system
+          image: shahabaz4573/workerqueuesystem:latest
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: workerqueue-system
+  namespace: friendzy
+  labels:
+    app: workerqueuesystem
+    env: production
+
+spec:
+  type: NodePort  # Exposing the service outside the cluster
+  selector:
+    app: workerqueuesystem
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30001  # External port to access the service
